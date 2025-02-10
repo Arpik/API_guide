@@ -1,0 +1,6 @@
+@FlowerStoreAPI_HostAddress = http://localhost:5116
+
+GET {{FlowerStoreAPI_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
