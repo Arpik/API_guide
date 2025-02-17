@@ -4,16 +4,17 @@ using Microsoft.AspNetCore.Mvc;
 [Route("api/flowers")]
 public class FlowerController : ControllerBase
 {
-    private static List<Flower> flowers = new List<Flower>
+    private readonly FlowerService _flowerService;
+
+    public FlowerController(FlowerService flowerService)
     {
-        new Flower { Id = 1, Name = "Rose", Color = "Red", Price = 5.99 },
-        new Flower { Id = 2, Name = "Tulip", Color = "Yellow", Price = 3.49 }
-    };
+        _flowerService = flowerService;
+    }
 
     [HttpGet]
     public IActionResult GetFlowers()
     {
-        return Ok(flowers);
+        return Ok(_flowerService.GetAllFlowers());
     }
 
     [HttpPost]
@@ -24,9 +25,7 @@ public class FlowerController : ControllerBase
             return BadRequest("Flower name and color are required.");
         }
 
-        flower.Id = flowers.Count + 1;
-        flowers.Add(flower);
-
-        return CreatedAtAction(nameof(GetFlowers), new { id = flower.Id }, flower);
+        var addedFlower = _flowerService.AddFlower(flower);
+        return CreatedAtAction(nameof(GetFlowers), new { id = addedFlower.Id }, addedFlower);
     }
 }
