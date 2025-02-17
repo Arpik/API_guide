@@ -17,10 +17,16 @@ public class FlowerController : ControllerBase
     }
 
     [HttpPost]
-    public IActionResult AddFlower(Flower flower)
+    public IActionResult AddFlower([FromBody] Flower flower)
     {
+        if (string.IsNullOrWhiteSpace(flower.Name) || string.IsNullOrWhiteSpace(flower.Color))
+        {
+            return BadRequest("Flower name and color are required.");
+        }
+
         flower.Id = flowers.Count + 1;
         flowers.Add(flower);
+
         return CreatedAtAction(nameof(GetFlowers), new { id = flower.Id }, flower);
     }
 }
