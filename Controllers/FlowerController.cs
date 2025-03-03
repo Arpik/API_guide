@@ -18,14 +18,14 @@ public class FlowerController : ControllerBase
     }
 
     [HttpPost]
-    public IActionResult AddFlower([FromBody] Flower flower)
+    public async Task<IActionResult> AddFlower([FromBody] Flower flower)
     {
         if (string.IsNullOrWhiteSpace(flower.Name) || string.IsNullOrWhiteSpace(flower.Color))
         {
             return BadRequest("Flower name and color are required.");
         }
 
-        var addedFlower = _flowerService.AddFlower(flower);
+        var addedFlower = await _flowerService.AddFlowerAsync(flower);
         return CreatedAtAction(nameof(GetFlowers), new { id = addedFlower.Id }, addedFlower);
     }
 }
