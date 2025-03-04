@@ -2,6 +2,13 @@ public class FlowerService
 {
     private readonly ApplicationDbContext _context;
 
+    public async Task<Flower> AddFlowerAsync(Flower flower)
+    {
+        _context.Flowers.Add(flower);
+        await _context.SaveChangesAsync();
+        return flower;
+    }
+
     public FlowerService(ApplicationDbContext context)
     {
         _context = context;
@@ -10,12 +17,5 @@ public class FlowerService
     public List<Flower> GetAllFlowers()
     {
         return _context.Flowers.ToList();
-    }
-
-    public Flower AddFlower(Flower flower)
-    {
-        _context.Flowers.Add(flower);
-        _context.SaveChanges();
-        return flower;
     }
 }
