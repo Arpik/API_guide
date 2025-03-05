@@ -28,4 +28,22 @@ public class FlowerController : ControllerBase
         var addedFlower = await _flowerService.AddFlowerAsync(flower);
         return CreatedAtAction(nameof(GetFlowers), new { id = addedFlower.Id }, addedFlower);
     }
+
+   [HttpPut("{id}")]
+    public IActionResult UpdateFlower(int id, [FromBody] Flower flower)
+    {
+        if (id != flower.Id)
+        {
+            return BadRequest("Flower ID mismatch.");
+        }
+
+        var updatedFlower = _flowerService.UpdateFlower(flower);
+        
+        if (updatedFlower == null)
+        {
+            return NotFound($"Flower with ID {id} not found.");
+        }
+
+        return NoContent(); // 204 No Content (successful update)
+    }
 }
