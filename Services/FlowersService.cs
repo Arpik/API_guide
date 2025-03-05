@@ -18,4 +18,22 @@ public class FlowerService
     {
         return _context.Flowers.ToList();
     }
+
+    public Flower? UpdateFlower(Flower updatedFlower)
+    {
+        var existingFlower = _context.Flowers.FirstOrDefault(f => f.Id == updatedFlower.Id);
+        
+        if (existingFlower == null)
+        {
+            return null; // Not found
+        }
+
+        existingFlower.Name = updatedFlower.Name;
+        existingFlower.Color = updatedFlower.Color;
+        existingFlower.Price = updatedFlower.Price;
+
+        _context.SaveChanges(); // Save changes to the database
+
+        return existingFlower;
+    }
 }
