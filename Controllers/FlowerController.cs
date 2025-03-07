@@ -29,7 +29,7 @@ public class FlowerController : ControllerBase
         return CreatedAtAction(nameof(GetFlowers), new { id = addedFlower.Id }, addedFlower);
     }
 
-   [HttpPut("{id}")]
+    [HttpPut("{id}")]
     public IActionResult UpdateFlower(int id, [FromBody] Flower flower)
     {
         if (id != flower.Id)
@@ -38,12 +38,25 @@ public class FlowerController : ControllerBase
         }
 
         var updatedFlower = _flowerService.UpdateFlower(flower);
-        
+
         if (updatedFlower == null)
         {
             return NotFound($"Flower with ID {id} not found.");
         }
 
         return NoContent(); // 204 No Content (successful update)
+    }
+
+    [HttpDelete("{id}")]
+    public IActionResult DeleteFlower(int id)
+    {
+        var isDeleted = _flowerService.DeleteFlower(id);
+
+        if (!isDeleted)
+        {
+            return NotFound($"Flower with ID {id} not found.");
+        }
+
+        return NoContent(); // 204 No Content (successful deletion)
     }
 }
