@@ -36,4 +36,20 @@ public class FlowerService
 
         return existingFlower;
     }
+
+    public bool DeleteFlower(int id)
+    {
+        var flower = _context.Flowers.FirstOrDefault(f => f.Id == id);
+        
+        if (flower == null)
+        {
+            return false; // Not found
+        }
+
+        _context.Flowers.Remove(flower);
+        _context.SaveChanges(); // Save changes to the database
+
+        return true; // Deletion successful
+    }
+
 }
